@@ -1,3 +1,4 @@
+import { terminal } from "terminal-kit"
 import TerminalUtil from "@/utils/terminal-util"
 import race from "@/core/fundamentals/race"
 import Fusca from "@/core/fundamentals/fusca"
@@ -21,7 +22,7 @@ export default async function dip() {
       break
   }
 
-  race(car)
+  race(car, terminal.gray)
 
   await TerminalUtil.waitEnter()
 }
