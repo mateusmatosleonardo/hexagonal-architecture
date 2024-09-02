@@ -52,4 +52,8 @@ export default class TerminalUtil {
     terminal.white("\nPressione ENTER para continuar...")
     await terminal.inputField({ echo: false }).promise
   }
+
+  static async success(text: string) {
+    terminal.green(text)
+  }
 }
