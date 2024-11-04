@@ -1,25 +1,28 @@
 import TerminalUtil from "@/utils/terminal-util"
 import User from "@/core/user/model/user"
-import SaveUser from "@/core/user/use-cases/save-user"
+import SaveUserUseCase from "@/core/user/use-cases/save-user"
+import PasswordEncrypt from "@/adapter/auth/PasswordEncrypt"
 
 export default async function saveUser() {
   TerminalUtil.title("Registrar usuário")
 
-  // const id = await TerminalUtil.requiredField("Id: ")
   const name = await TerminalUtil.requiredField("Nome: ")
   const email = await TerminalUtil.requiredField("E-mail: ")
   const password = await TerminalUtil.requiredField("Senha: ")
 
   const user: User = { name, email, password }
 
-  await new SaveUser().execute(user)
+  const cryptoProvider = new PasswordEncrypt()
+  const useCase = new SaveUserUseCase(cryptoProvider)
+
+  await useCase.execute(user)
 
   TerminalUtil.success("Usuário registrado com sucesso")
 
   await TerminalUtil.waitEnter()
 
   try {
-    await new SaveUser().execute(user)
+    await useCase.execute(user)
   } catch (e: any) {
     TerminalUtil.error(e.message)
   } finally {
